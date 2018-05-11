@@ -11,6 +11,14 @@ class ChatRoomsController < ApplicationController
     @chat_room = ChatRoom.includes(:messages).find_by(id: params[:id])
     @message = Message.new
   end
+  
+  def destroy
+    @chat_room = ChatRoom.includes(:messages).find_by(id: params[:id])
+    @chat_room.destroy
+    flash[:notice] = "チャットを削除しました"
+    redirect_to root_path
+  end
+  
 
   def create
     @chat_room = current_user.chat_rooms.build(chat_room_params)
@@ -21,7 +29,8 @@ class ChatRoomsController < ApplicationController
       render 'new'
     end
   end
-
+  
+ 
   private
 
   def chat_room_params
